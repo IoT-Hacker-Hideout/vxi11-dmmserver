@@ -7,10 +7,10 @@ import vxi11
 import queue
 
 dmmip = "10.10.60.124"
-async_mode = None
+async_mode = 'gevent'
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app, async_mode=async_mode)
+socketio = SocketIO(app, async_mode=async_mode, cors_allowed_origins='*')
 thread = None
 thread_lock = Lock()
 control_q = queue.Queue()
@@ -46,7 +46,7 @@ def background_thread():
                     instr.write("INIT")
                 if cmd == "cont":
                     instr.write("CONF:CONT")
-                    instr.write("CONT:THR:VAL 2000")
+                    instr.write("CONT:THR:VAL 100")
                     instr.write("CONT:VOL:STAT HIGH")
                     instr.write("TRIG:COUN INF")
                     instr.write("INIT")
